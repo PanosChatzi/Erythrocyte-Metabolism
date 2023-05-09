@@ -6,21 +6,22 @@
 # Affiliation: PhD candidate at Aristotle University of Thessaloniki, Greece
 # Contact: chatzinpn@phed-sr.auth.gr
 #
-# Latest update: 09/05/2023
+# Latest update: 10/05/2023
 
 # Functions ----
-source(file = "phd_projects/Hp-pc/code/RBC_oxygen_model.R")
+source(file = "code/RBC_oxygen_model.R")
 
 # Simulations ----
 # Set the simulation variables.
 po2 = 0:100                           # Create a vector of value for the partial pressure of oxygen.
 bpg23_total <- 5 * (10 ^ (-3))        # Total 2,3-bisphosphoglycerate in the erythrocyte.
-bpg23_lungs <- 0.37 * (10 ^ (-3))     # Bound 2,3-BPG concentration in the lungs.  
-bpg23_muscle <- 4.1 * (10 ^ (-3))     # Bound 2,3-BPG concentration in the skeletal muscles.
+bpg23_lungs <- 0.9 * (10 ^ (-3))     # Bound 2,3-BPG concentration in the lungs.  
+bpg23_muscle <- 4.65 * (10 ^ (-3))     # Bound 2,3-BPG concentration in the skeletal muscles.
 
 # A. Lungs ----
 # 1. Calculate p50 in the lungs
 p50_lungs <- model_p50(dpg_rbc = bpg23_lungs, dpg_s = bpg23_total)
+round(p50_lungs, 1)
 
 # 2. Calculate the oxygen saturation in the lungs using the Hill equation.
 SHbO2_lungs <- model_hill(po2 = po2, p50 = p50_lungs)
@@ -31,6 +32,7 @@ lung_data <- data.frame(po2, SHbO2_lungs)
 # B. Muscles ----
 # 1. Calculate p50 in the skeletal muscle.
 p50_muscle <- model_p50(dpg_rbc = bpg23_muscle, dpg_s = bpg23_total)
+round(p50_muscle, 1)
 
 # 2. Calculate the oxygen saturation in the muscle with the Hill equation.
 SHbO2_muscle <- model_hill(po2 = po2, p50 = p50_muscle)
@@ -48,8 +50,8 @@ plot_hill(p50 = p50_lungs,
 
 # Export ----
 # Export the simulated data to ".csv" files.
-write.csv2(lung_data, file = "D:/Rdirectory/phd_projects/data/lungs_data.csv", 
+write.csv2(lung_data, file = "data/lungs_data.csv", 
           row.names = FALSE)
 
-write.csv2(muscle_data,"D:/Rdirectory/phd_projects/data/muscle_data.csv",
+write.csv2(muscle_data,"data/muscle_data.csv",
            row.names = FALSE)
