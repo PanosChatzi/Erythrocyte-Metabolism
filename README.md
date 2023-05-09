@@ -1,11 +1,11 @@
 # Erythrocyte-Metabolism
 
-- Panagiotis N. Chatzinikolaou
+-   Panagiotis N. Chatzinikolaou
 
-- Project title: Erythrocyte Metabolism
+-   Project title: Erythrocyte Metabolism
 
-- Personal website: panos-chatz.netlify.app
+-   Personal website: panos-chatz.netlify.app
 
-- Emails: chatzinpn@phed-sr.auth.gr
+-   Emails: [chatzinpn\@phed-sr.auth.gr](mailto:chatzinpn@phed-sr.auth.gr){.email}
 
-
+The manuscript "Erythrocyte Metabolism" that is associated with this repository is currently under review in Metabolism.
