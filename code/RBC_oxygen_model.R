@@ -6,7 +6,7 @@
 # Affiliation: PhD candidate at Aristotle University of Thessaloniki, Greece
 # Contact: chatzinpn@phed-sr.auth.gr
 #
-# Latest update: 09/05/2023
+# Latest update: 14/05/2023
 
 # Oxygen curve models ----
 # Custom functions based on the equations and data of Dash et al, 2016.
@@ -139,16 +139,16 @@ compute_F <- function (ph = 7.4) { # Plasma pH in standard conditions.
 }
 
 # Model of HbO2 saturation (SHbO2; equation 1a) based on Dash et al, 2016.
-model_dash <- function(dpg_rbc = 4.65 * (10 ^ (-3)), # 2,3-BPG standard conditions.
-                       po2 = 100,       # Partial pressure of oxygen in standard conditions.
-                       pco2 = 40,       # Partial pressure of carbon dioxide in standard conditions.
-                       ph = 7.4,        # Plasma pH in standard conditions.
-                       temp = 37,       # Temperature in standard conditions.
-                       w_pl = 0.94,     # Fractional water space of plasma.
-                       p50.var = TRUE,  # Evaluate if p50 is in standard conditions.
-                       k4.var = TRUE) { # Evaluate if K4' in standard conditions.
+model_oxy_dash <- function(dpg_rbc = 4.65 * (10 ^ (-3)), # 2,3-BPG standard conditions.
+                           po2 = 100,       # Partial pressure of oxygen in standard conditions.
+                           pco2 = 40,       # Partial pressure of carbon dioxide in standard conditions.
+                           ph = 7.4,        # Plasma pH in standard conditions.
+                           temp = 37,       # Temperature in standard conditions.
+                           w_pl = 0.94,     # Fractional water space of plasma.
+                           p50.var = TRUE,  # Evaluate if p50 is in standard conditions.
+                           k4.var = TRUE) { # Evaluate if K4' in standard conditions.
   
-  # This function is organized in 8 steps to calculate  oxygen saturation:
+  # This function is organized in 8 steps to calculate oxygen saturation:
   
   # Step 1. Set the parameters based on Table 1.
   K2_prime1 <- 21.5 # or 23.65
@@ -181,21 +181,21 @@ model_dash <- function(dpg_rbc = 4.65 * (10 ^ (-3)), # 2,3-BPG standard conditio
   }
   
   # Step 5. Evaluate if k4.var is TRUE.
+  # If TRUE, the calculate K4_prime1 based on equation 7.
   if(k4.var == TRUE) {
-    #  1. If TRUE, the calculate K4_prime1 based on equation 7.
     
-    #  2. Calculate nH using equation 11.
+    #  a. Calculate nH using equation 11.
     nH <-  compute_nHill(po2 = po2)
     
-    #  3. Calculate ao2 using equation 2a.
+    #  b. Calculate ao2 using equation 2a.
     ao2 <- (1.37 - 0.0137 * (temp - 37) + 0.00058 * 
               ((temp - 37) ^ 2)) * ((10 ^ (-6)) / w_pl)
     
-    #  4. Calculate aco2 using equation 2b.
+    #  c. Calculate aco2 using equation 2b.
     aco2 <- (3.07 - 0.057 * (temp - 37) + 0.002 * 
                (temp - 37) ^ 2) * ((10 ^ (-5)) / w_pl)
     
-    #  5. Now calculate K4prime.
+    #  d. Now calculate K4prime.
     K4_prime1 <- (((ao2 * po2) ^ (nH - 1)) * ((K2_prime1 * aco2 * pco2 * F1) + F3)) /
       (((ao2 * p50) ^ nH) * ((K3_prime1 * aco2 * pco2 * F2) + F4))
     
@@ -209,12 +209,12 @@ model_dash <- function(dpg_rbc = 4.65 * (10 ^ (-3)), # 2,3-BPG standard conditio
   khbo2 <- (K4_prime1 * ((K3_prime1 * free_co2_bl * F2) + F4)) / ((K2_prime1 * free_co2_bl * F1) + F3)
   
   # Step 7. Calculate SHbO2 using equation 1a.
-  sat <-  (khbo2 * free_oxy_bl) / (1 + (khbo2 * free_oxy_bl))
+  shbo2 <-  (khbo2 * free_oxy_bl) / (1 + (khbo2 * free_oxy_bl))
   
-  # Step 8. Combine the saturation, K4_prime, and khbo2 values into a list.
-  out <- list(sat, K4_prime1, khbo2)
+  # Step 8. Combine the SHbO2, K4_prime, and KHbO2 values into a list.
+  out <- list(shbo2, K4_prime1, khbo2)
   
-  names(out) <- c("SHbo2", "K4prime", "KHbo2")
+  names(out) <- c("SHbO2", "K4prime", "KHbO2")
   
   return(out)
 }
