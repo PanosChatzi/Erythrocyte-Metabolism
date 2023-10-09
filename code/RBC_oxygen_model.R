@@ -222,7 +222,7 @@ model_oxy_dash <- function(dpg_rbc = 4.65 * (10 ^ (-3)), # 2,3-BPG standard cond
 # Oxygen delivery models ----
 # Function to calculate the oxygen delivery capacity. 
 compute_total_oxygen <- function(bind = 1.39,     # Binding capacity can vary between 1.30, 1.34 and 1.39.
-                                 hb = 15,         # Hemoglobin concentration in grams per L.
+                                 hb = 15,         # Hemoglobin concentration in grams per dL.
                                  sat = 0.972,     # Oxygen saturation.
                                  po2 = 100) {     # Partial pressure of oxygen in arterial blood.
   
@@ -230,7 +230,7 @@ compute_total_oxygen <- function(bind = 1.39,     # Binding capacity can vary be
   oxygen <- (bind * hb * sat) + (0.0225 * (po2 / 7.50062))
   
   # Equation from Deranged Physiology website.
-  #oxygen <- (bind * 150 * 0.972) + (0.03 * po2)
+  #oxygen <- (bind * 150 * 0.972) + (0.03 * po2) # here, hemoglobin is g/L
   
   return(oxygen)
 }
@@ -239,7 +239,7 @@ compute_total_oxygen <- function(bind = 1.39,     # Binding capacity can vary be
 compute_oxygen_dash <- function(po2 = 100,               # Partial pressure of oxygen.
                                 hct = 0.45,              # Hematocrit.
                                 sat = 0.972,             # Oxygen saturation of hemoglobin.
-                                blood_hb = 150,          # Hemoglobin concentration in blood (mg / L).
+                                blood_hb = 150,          # Hemoglobin concentration in blood (g / L).
                                 temp = 37,               # Temperature in standard conditions.
                                 water_plasma = 0.94,     # Fractional water space of plasma.
                                 water_rbc = 0.65) {      # Fractional water space of erythrocytes.
@@ -276,56 +276,64 @@ oxygen.delivery <- function(co = 5,       # Cardiac out in L/min.
 
 # Plot functions ----
 # Function to plot the oxygen dissociation curve.
-plot_hill <- function(x = 0:100,            # Create a vector of values for PO2.
-                      p50 = 26.8,           # p50 dynamic.
-                      p50_std = 26.8,       # p50 in standard conditions.
+plot_hill <- function(po2 = 0:100,            # Create a vector of values for PO2.
+                      p50_pre = 26.8,           # p50 dynamic.
+                      p50_post = 26.8,       # p50 in standard conditions.
                       add.std.p50 = FALSE,
                       add.new.p50 = FALSE,
                       add.text = FALSE,
                       add.arrow = FALSE,
+                      add.second.curve = FALSE,
                       ...) { # Optional further arguments passed on the plot.
   
   # Calculate SHbO2 based on the defined range of PO2 values.
-  SHbO2 <- model_hill(po2 = x, p50 = p50) * 100
+  SHbO2_pre <- model_hill(po2 = po2, p50 = p50_pre) * 100
+  SHbO2_post <- model_hill(po2 = po2, p50 = p50_post) * 100
   
   # Generate the plot with optional arguments.
-  plot(SHbO2,
+  plot(x = po2, y = SHbO2_pre,
        type = "l", lty = 1, lwd = 2,
        main= "Oxygen dissociation curve",
        xlab = "Partial pressure of oxygen (mmHg)",
-       ylab = "Oxygen saturation (%)",
+       ylab = "Hemoglobin oxygen saturation (%)",
        xlim = c(0, 100), ylim = c(0, 100),
        las = 1, xaxs = "i", yaxs = "i",
        font.lab = 2, font.axis = 2,
        ...)
   
-  # If add.std.50 is TRUE add a vertical line for the standard p50 (26.8).
+  # If add.second.curve is TRUE, add a second curve on 'y' axis on top the previous plot
+  if(add.second.curve == TRUE) {
+  lines(x = po2, y = SHbO2_post,
+       type = "l", lty = 1, lwd = 2, col = "red")
+  }
+  
+  # If add.std.50 is TRUE, add a vertical line for the standard p50 (26.8).
   if(add.std.p50 == TRUE) {
-  abline(v = p50_std, col = "black", lty = 2, lwd = 1)
+  abline(v = p50_pre, col = "black", lty = 2, lwd = 1)
     }
   
-  # If add.new.50 is TRUE add a vertical line for the calculated p50.
+  # If add.new.50 is TRUE, add a vertical line for the calculated p50.
   if(add.new.p50 == TRUE) {
-  abline(v = p50, col = "red", lty = 2, lwd = 1)
+  abline(v = p50_post, col = "red", lty = 2, lwd = 1)
     }
 
-  # If add.text is TRUE add text showing the calculated p50 value.
+  # If add.text is TRUE, add text showing the calculated p50 value.
   if(add.text == TRUE) {
-  text(SHbO2[p50], SHbO2[p50] + 3, paste0("p50= ", round(p50, 2), " mmHg"))
+  text(SHbO2[p50_post], SHbO2[p50_post] + 3, paste0("p50= ", round(p50_post, 2), " mmHg"))
     }
 
-  # If add.arrow is TRUE add arrow to the direction of p50.
+  # If add.arrow is TRUE, add arrow to the direction of p50.
   if(add.arrow == TRUE) {
   
   # Change the direction of the arrow if p50 shifted to the left or right.
-  if(p50 > p50_std) {
-    arrows(x0 = p50_std - 2, y0 = 85,
-           x1 = p50, y1 = 85,
+  if(p50_post > p50_pre) {
+    arrows(x0 = p50_pre - 2, y0 = 85,
+           x1 = p50_post, y1 = 85,
            length = .075, lwd = 1.75,
            col = "red")
   } else {
-    arrows(x0 = p50_std +2, y0 = 85,
-           x1 = p50, y1 = 85,
+    arrows(x0 = p50_pre + 2, y0 = 85,
+           x1 = p50_post, y1 = 85,
            length = .075, lwd = 1.75,
            col = "red")
     }

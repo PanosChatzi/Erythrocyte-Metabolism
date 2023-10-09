@@ -15,8 +15,8 @@ source(file = "code/RBC_oxygen_model.R")
 # Set the simulation variables.
 po2 = 0:100                           # Create a vector of value for the partial pressure of oxygen.
 bpg23_total <- 5 * (10 ^ (-3))        # Total 2,3-bisphosphoglycerate in the erythrocyte.
-bpg23_lungs <- 0.9 * (10 ^ (-3))     # Bound 2,3-BPG concentration in the lungs.  
-bpg23_muscle <- 4.65 * (10 ^ (-3))     # Bound 2,3-BPG concentration in the skeletal muscles.
+bpg23_lungs <- 0.9 * (10 ^ (-3))      # Bound 2,3-BPG concentration in the lungs.  
+bpg23_muscle <- 4.65 * (10 ^ (-3))    # Bound 2,3-BPG concentration in the skeletal muscles.
 
 # A. Lungs ----
 # 1. Calculate p50 in the lungs
@@ -43,7 +43,6 @@ muscle_data <- data.frame(po2, SHbO2_muscle)
 # Plots ----
 plot_hill(p50 = p50_lungs, 
           p50_std = p50_muscle, 
-          add.std.p50 = T, 
           add.new.p50 = T, 
           add.arrow = T,
           add.text = T)
