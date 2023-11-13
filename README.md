@@ -10,7 +10,7 @@ First author details:
 
 -   Email: [chatzinpn\@phed-sr.auth.gr](mailto:chatzinpn@phed-sr.auth.gr)
 
--   Twitter handle: [\@PanosChatz1](https://twitter.com/PanosChatz1){.uri}
+-   Twitter handle: <https://twitter.com/PanosChatz1>
 
 ### Repository structure
 
