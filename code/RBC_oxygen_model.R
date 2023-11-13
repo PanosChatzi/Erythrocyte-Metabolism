@@ -220,17 +220,25 @@ model_oxy_dash <- function(dpg_rbc = 4.65 * (10 ^ (-3)), # 2,3-BPG standard cond
 }
 
 # Oxygen delivery models ----
-# Function to calculate the oxygen delivery capacity. 
-compute_total_oxygen <- function(bind = 1.39,     # Binding capacity can vary between 1.30, 1.34 and 1.39.
-                                 hb = 15,         # Hemoglobin concentration in grams per dL.
-                                 sat = 0.972,     # Oxygen saturation.
-                                 po2 = 100) {     # Partial pressure of oxygen in arterial blood.
+# Function to calculate the oxygen delivery capacity based on Dunn 2016. 
+compute_oxygen_capacity <- function(bind = 1.39,     # Binding capacity can vary between 1.30, 1.34 and 1.39.
+                                    hb = 15,         # Hemoglobin concentration in grams per dL.
+                                    sat = 0.972,     # Oxygen saturation.
+                                    po2 = 100) {     # Partial pressure of oxygen in arterial blood.
   
   # Equation from Dunn 2016
   oxygen <- (bind * hb * sat) + (0.0225 * (po2 / 7.50062))
   
-  # Equation from Deranged Physiology website.
-  #oxygen <- (bind * 150 * 0.972) + (0.03 * po2) # here, hemoglobin is g/L
+  return(oxygen)
+}
+
+# Define function based on the equation from Deranged Physiology.
+compute_oxygen_capacity_2 <- function(bind = 1.36,     # Binding capacity can vary between 1.30, 1.34 and 1.39.
+                                      hb = 150,        # Hemoglobin concentration in grams per dL.
+                                      sat = 0.972,     # Oxygen saturation.
+                                      po2 = 100) {     # Partial pressure of oxygen in arterial blood.
+
+  oxygen <- (bind * hb * sat) + (0.03 * po2)
   
   return(oxygen)
 }
@@ -266,7 +274,7 @@ compute_oxygen_dash <- function(po2 = 100,               # Partial pressure of o
 }
 
 # Oxygen delivery capacity in blood.
-oxygen.delivery <- function(co = 5,       # Cardiac out in L/min.
+compute_oxygen_delivery <- function(co = 5,       # Cardiac out in L/min.
                             total.oxygen) {
   
   do2 <- co * total.oxygen
