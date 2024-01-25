@@ -1,16 +1,18 @@
 # Erythrocyte-Metabolism
 
-This repository is associated with the manuscript "Erythrocyte Metabolism" that is currently under revision in *Acta Physiologica* (APH-2023-07-0308).
+This repository corresponds to our review paper titled "**Erythrocyte metabolism**", which has been published in *Acta Physiologica* (https://onlinelibrary.wiley.com/doi/10.1111/apha.14081).
 
 First author details:
 
 -   Panagiotis N. Chatzinikolaou
 
+-   Twitter handle: <https://twitter.com/PanosChatz1>
+
 -   Personal website: [panos-chatz.netlify.app](https://panos-chatz.netlify.app/)
 
 -   Email: [chatzinpn\@phed-sr.auth.gr](mailto:chatzinpn@phed-sr.auth.gr)
 
--   Twitter handle: <https://twitter.com/PanosChatz1>
+-   ORCID ID: https://orcid.org/0000-0002-8136-1638
 
 ### Repository structure
 
