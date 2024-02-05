@@ -1,6 +1,6 @@
 # Erythrocyte-Metabolism
 
-This repository corresponds to our review paper titled "**Erythrocyte metabolism**", which has been published in *Acta Physiologica* (https://onlinelibrary.wiley.com/doi/10.1111/apha.14081).
+This repository corresponds to our review paper titled "**Erythrocyte metabolism**", which has been published in *Acta Physiologica* (<https://onlinelibrary.wiley.com/doi/10.1111/apha.14081>).
 
 First author details:
 
@@ -12,7 +12,7 @@ First author details:
 
 -   Email: [chatzinpn\@phed-sr.auth.gr](mailto:chatzinpn@phed-sr.auth.gr)
 
--   ORCID ID: https://orcid.org/0000-0002-8136-1638
+-   ORCID ID: <https://orcid.org/0000-0002-8136-1638>
 
 ### Repository structure
 
