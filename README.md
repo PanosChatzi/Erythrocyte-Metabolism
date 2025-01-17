@@ -1,6 +1,6 @@
-# Erythrocyte-Metabolism
+# Erythrocyte Metabolism
 
-This repository corresponds to our review paper titled "**Erythrocyte metabolism**", which has been published in *Acta Physiologica* (<https://onlinelibrary.wiley.com/doi/10.1111/apha.14081>).
+This repository corresponds to our review paper titled "**Erythrocyte metabolism**", which has been published in *Acta Physiologica* (<https://onlinelibrary.wiley.com/doi/10.1111/apha.14081>). Custom scripts were written to construct models of oxygen dissociation, total blood oxygen capacity, and blood transit time in capillaries, based on established mathematical models in the literature. The model was also integrated into a Shiny app, allowing for dynamic exploration and effective communication of the findings.
 
 First author details:
 
